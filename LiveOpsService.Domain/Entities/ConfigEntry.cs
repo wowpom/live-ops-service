@@ -3,6 +3,6 @@ namespace LiveOpsService.Domain.Entities;
 public class ConfigEntry
 {
     public Guid Id { get; set; }
-    public string JsonBody { get; set; }
-    public string Key { get; set; }
+    public string Name { get; set; }
+    public Dictionary<string, ConfigSection> ConfigSection { get; set; } = new();
 }
