@@ -1,6 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveOpsService", "LiveOpsService\LiveOpsService.csproj", "{72E2588F-C144-4071-A093-4BCD7E18D7D1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveOpsService.Api", "LiveOpsService.Api\LiveOpsService.Api.csproj", "{72E2588F-C144-4071-A093-4BCD7E18D7D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveOpsService.Domain", "LiveOpsService.Domain\LiveOpsService.Domain.csproj", "{04EEE6E6-3492-4C06-BF61-7405A977BECC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveOpsService.Application", "LiveOpsService.Application\LiveOpsService.Application.csproj", "{EE72694D-D5FA-4C7B-B44E-50B301952CF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveOpsService.Infrastructure", "LiveOpsService.Infrastructure\LiveOpsService.Infrastructure.csproj", "{C3EFAB14-F118-4CA9-B769-1F350E5E5CFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +18,17 @@ Global
 		{72E2588F-C144-4071-A093-4BCD7E18D7D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72E2588F-C144-4071-A093-4BCD7E18D7D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72E2588F-C144-4071-A093-4BCD7E18D7D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04EEE6E6-3492-4C06-BF61-7405A977BECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EEE6E6-3492-4C06-BF61-7405A977BECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EEE6E6-3492-4C06-BF61-7405A977BECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EEE6E6-3492-4C06-BF61-7405A977BECC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE72694D-D5FA-4C7B-B44E-50B301952CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE72694D-D5FA-4C7B-B44E-50B301952CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE72694D-D5FA-4C7B-B44E-50B301952CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE72694D-D5FA-4C7B-B44E-50B301952CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3EFAB14-F118-4CA9-B769-1F350E5E5CFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3EFAB14-F118-4CA9-B769-1F350E5E5CFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3EFAB14-F118-4CA9-B769-1F350E5E5CFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3EFAB14-F118-4CA9-B769-1F350E5E5CFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
