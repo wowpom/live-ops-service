@@ -1,0 +1,69 @@
+@baseUrl = http://localhost:5080
+@projectSlug = read-demo
+
+### Run requests in order against a fresh InMemory service.
+### Create project: 201; Location should resolve to GET.
+POST {{baseUrl}}/api/admin/projects
+Content-Type: application/json
+
+{"slug":"{{projectSlug}}","name":"Read demo"}
+
+### Empty platforms: 200 []
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms
+
+### Create Android: 201
+POST {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms
+Content-Type: application/json
+
+{"slug":"android","name":"Android"}
+
+### Create iOS: 201
+POST {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms
+Content-Type: application/json
+
+{"slug":"ios","name":"iOS"}
+
+### Two platforms: 200
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms
+
+### Android Location: 200
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/android
+
+### Empty versions: 200 []
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/android/versions
+
+### Android version: 201
+POST {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/android/versions
+Content-Type: application/json
+
+{"version":"1.0.0"}
+
+### iOS still has no versions: 200 []
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/ios/versions
+
+### Same version in iOS is allowed: 201
+POST {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/ios/versions
+Content-Type: application/json
+
+{"version":"1.0.0"}
+
+### Android versions: 200
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/android/versions
+
+### iOS versions: 200
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/ios/versions
+
+### Version Location: 200
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/android/versions/1.0.0
+
+### Unknown project: 404
+GET {{baseUrl}}/api/admin/projects/missing-project/platforms
+
+### Unknown platform: 404
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/missing-platform
+
+### Unknown platform versions: 404
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/missing-platform/versions
+
+### Unknown version: 404
+GET {{baseUrl}}/api/admin/projects/{{projectSlug}}/platforms/android/versions/9.9.9
