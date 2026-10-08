@@ -30,7 +30,7 @@ public class InMemoryProjectRepository : IProjectRepository
     {
         if (_projects.TryGetValue(slug, out var project))
         {
-            return Task.FromResult(project);
+            return Task.FromResult<Project?>(project);
         }
         
         return Task.FromResult<Project?>(null);
@@ -74,7 +74,7 @@ public class InMemoryProjectRepository : IProjectRepository
 
         if (project.PlatformsMap.TryGetValue(slug, out var platform))
         {
-            return Task.FromResult(platform);
+            return Task.FromResult<Platform?>(platform);
         }
         
         return Task.FromResult<Platform?>(null);
@@ -132,7 +132,7 @@ public class InMemoryProjectRepository : IProjectRepository
 
         if (platform.AppVersionsMap.ContainsKey(slug))
         {
-            return Task.FromResult(platform.AppVersionsMap[slug]);
+            return Task.FromResult<AppVersion?>(platform.AppVersionsMap[slug]);
         }
         
         return Task.FromResult<AppVersion?>(null);
