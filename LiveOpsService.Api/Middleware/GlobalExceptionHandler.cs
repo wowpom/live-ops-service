@@ -29,6 +29,8 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         problem.Detail = exception switch
         {
             RequestValidationException => "One or more fields are invalid.",
+            BadHttpRequestException { StatusCode: StatusCodes.Status413PayloadTooLarge } => "The request body exceeds the permitted size.",
+            BadHttpRequestException { StatusCode: StatusCodes.Status415UnsupportedMediaType } => "Expected application/json.",
             BadHttpRequestException => "The request body is missing, malformed or unsupported.",
             IAppException => exception.Message,
             _ => "Internal server error."
