@@ -48,6 +48,24 @@ public class ConfigService(IProjectRepository projects, IConfigRepository config
         }
     }
 
+    public async Task<PublishedConfig> PublishAsync(string projectSlug, string platformSlug, string version)
+    {
+        var appVersion = await GetVersionAsync(projectSlug, platformSlug, version);
+        return await configs.PublishAsync(appVersion.Id);
+    }
+
+    public async Task<PublishedConfig> GetPublishedAsync(string projectSlug, string platformSlug, string version)
+    {
+        var appVersion = await GetVersionAsync(projectSlug, platformSlug, version);
+        var publication = await configs.GetPublishedAsync(appVersion.Id);
+        if (publication is null)
+        {
+            throw new NotFoundException("Published configuration not found.");
+        }
+
+        return publication;
+    }
+
     private async Task<AppVersion> GetVersionAsync(string projectSlug, string platformSlug, string version)
     {
         var appVersion = await projects.GetVersionBySlugAsync(projectSlug, platformSlug, version);

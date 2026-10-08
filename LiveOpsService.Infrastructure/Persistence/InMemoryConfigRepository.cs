@@ -55,6 +55,39 @@ public class InMemoryConfigRepository(InMemoryStore store) : IConfigRepository
         }
     }
 
+    public Task<PublishedConfig> PublishAsync(Guid versionId)
+    {
+        lock (store.SyncRoot)
+        {
+            var draft = GetRequired(versionId);
+            if (draft.Sections.Count == 0)
+            {
+                throw new BadRequestException("A draft must contain at least one section before publication.");
+            }
+
+            var revision = store.Publications.TryGetValue(versionId, out var previous)
+                ? checked(previous.Revision + 1)
+                : 1;
+            var publication = new PublishedConfig
+            {
+                Revision = revision,
+                PublishedAt = DateTimeOffset.UtcNow,
+                Sections = draft.Sections.ToDictionary(pair => pair.Key, pair => pair.Value.Content.Clone())
+            };
+
+            store.Publications[versionId] = publication;
+            return Task.FromResult(Copy(publication));
+        }
+    }
+
+    public Task<PublishedConfig?> GetPublishedAsync(Guid versionId)
+    {
+        lock (store.SyncRoot)
+        {
+            return Task.FromResult(store.Publications.TryGetValue(versionId, out var publication) ? Copy(publication) : null);
+        }
+    }
+
     private ConfigEntry GetRequired(Guid versionId)
     {
         if (!store.Configs.TryGetValue(versionId, out var config))
