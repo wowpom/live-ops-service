@@ -33,4 +33,11 @@ internal static class InMemoryEntityCopy
         Sections = config.Sections.ToDictionary(pair => pair.Key,
             pair => new ConfigSection { Key = pair.Key, Content = pair.Value.Content.Clone() })
     };
+
+    internal static PublishedConfig Copy(PublishedConfig config) => new()
+    {
+        Revision = config.Revision,
+        PublishedAt = config.PublishedAt,
+        Sections = config.Sections.ToDictionary(pair => pair.Key, pair => pair.Value.Clone())
+    };
 }

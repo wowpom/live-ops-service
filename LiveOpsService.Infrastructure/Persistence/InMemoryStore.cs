@@ -7,4 +7,5 @@ public class InMemoryStore
     internal object SyncRoot { get; } = new();
     internal Dictionary<string, Project> Projects { get; } = new();
     internal Dictionary<Guid, ConfigEntry> Configs { get; } = new();
+    internal Dictionary<Guid, PublishedConfig> Publications { get; } = new();
 }

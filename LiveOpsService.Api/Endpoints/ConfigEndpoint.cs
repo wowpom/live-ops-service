@@ -15,6 +15,7 @@ public static class ConfigEndpoint
             .WithTags("Admin configs");
         group.MapPost("", Create);
         group.MapGet("", Get);
+        group.MapPost("/publish", Publish);
         group.MapPut("/sections/{key}", SaveSection);
         group.MapDelete("/sections/{key}", DeleteSection);
     }
@@ -29,6 +30,12 @@ public static class ConfigEndpoint
     {
         var config = await service.GetAsync(projectSlug, platformSlug, version);
         return Results.Ok(config.ToResponse());
+    }
+
+    private static async Task<IResult> Publish(string projectSlug, string platformSlug, string version, ConfigService service)
+    {
+        var publication = await service.PublishAsync(projectSlug, platformSlug, version);
+        return Results.Ok(publication.ToResponse(version));
     }
 
     private static async Task<IResult> SaveSection(string projectSlug, string platformSlug, string version, string key,

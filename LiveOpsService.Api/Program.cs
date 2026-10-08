@@ -42,6 +42,7 @@ public class Program
 
         app.MapAdminEndpoints();
         app.MapConfigEndpoints();
+        app.MapClientConfigEndpoints();
 
         app.MapGet("/", () => Results.Redirect("/swagger"));
 

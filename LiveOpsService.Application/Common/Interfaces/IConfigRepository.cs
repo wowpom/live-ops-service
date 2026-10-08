@@ -9,4 +9,7 @@ public interface IConfigRepository
     Task<ConfigEntry?> GetByVersionIdAsync(Guid versionId);
     Task SaveSectionAsync(Guid versionId, ConfigSection section);
     Task<bool> DeleteSectionAsync(Guid versionId, string key);
+    // Snapshot creation, revision increment and replacement must be atomic with draft edits.
+    Task<PublishedConfig> PublishAsync(Guid versionId);
+    Task<PublishedConfig?> GetPublishedAsync(Guid versionId);
 }
