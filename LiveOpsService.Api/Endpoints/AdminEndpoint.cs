@@ -23,64 +23,73 @@ public static class AdminEndpoint
 
     private static async Task<IResult> CreateProject(CreateProjectRequest request, IProjectRepository repository)
     {
-        var project = await repository.CreateAsync(request.slug, request.name);
-        return Results.Created($"/api/admin/projects/{request.slug}", project);
+        var input = RequestValidation.ValidateNamedResource(request.slug, request.name);
+        var project = await repository.CreateAsync(input.Slug, input.Name);
+        return Results.Created($"/api/admin/projects/{project.Slug}", project.ToResponse());
     }
 
     private static async Task<IResult> CreatePlatform(string projectSlug, CreatePlatformRequest request, IProjectRepository repository)
     {
-        var platform = await repository.AddPlatformAsync(projectSlug, request.slug, request.name);
-        return Results.Created($"/api/admin/projects/{projectSlug}/platforms/{request.slug}", platform);
+        var input = RequestValidation.ValidateNamedResource(request.slug, request.name);
+        var platform = await repository.AddPlatformAsync(projectSlug, input.Slug, input.Name);
+        return Results.Created($"/api/admin/projects/{projectSlug}/platforms/{platform.Slug}", platform.ToResponse());
     }
 
     private static async Task<IResult> CreateVersion(string projectSlug, string platformSlug, CreateVersionRequest request, IProjectRepository repository)
     {
-        var version = await repository.AddVersionAsync(projectSlug, platformSlug, request.version);
-        return Results.Created($"/api/admin/projects/{projectSlug}/platforms/{platformSlug}/versions/{request.version}", version);
+        var input = RequestValidation.ValidateVersion(request.version);
+        var version = await repository.AddVersionAsync(projectSlug, platformSlug, input);
+        return Results.Created($"/api/admin/projects/{projectSlug}/platforms/{platformSlug}/versions/{version.Version}", version.ToResponse());
     }
 
     private static async Task<IResult> GetPlatforms(string projectSlug, IProjectRepository repository)
     {
         var platforms = await repository.GetAllPlatformsAsync(projectSlug);
-        return Results.Ok(platforms);
+        return Results.Ok(platforms.Select(platform => platform.ToResponse()).ToArray());
     }
 
     private static async Task<IResult> GetPlatform(string projectSlug, string platformSlug, IProjectRepository repository)
     {
         var platform = await repository.GetPlatformBySlugAsync(projectSlug, platformSlug);
         if (platform is null)
+        {
             throw new NotFoundException($"Platform '{platformSlug}' not found.");
+        }
 
-        return Results.Ok(platform);
+        return Results.Ok(platform.ToResponse());
     }
 
     private static async Task<IResult> GetVersions(string projectSlug, string platformSlug, IProjectRepository repository)
     {
         var versions = await repository.GetAllVersions(projectSlug, platformSlug);
-        return Results.Ok(versions);
+        return Results.Ok(versions.Select(version => version.ToResponse()).ToArray());
     }
 
     private static async Task<IResult> GetVersion(string projectSlug, string platformSlug, string version, IProjectRepository repository)
     {
         var appVersion = await repository.GetVersionBySlugAsync(projectSlug, platformSlug, version);
         if (appVersion is null)
+        {
             throw new NotFoundException($"Version '{version}' not found.");
+        }
 
-        return Results.Ok(appVersion);
+        return Results.Ok(appVersion.ToResponse());
     }
 
     private static async Task<IResult> GetAll(IProjectRepository repository)
     {
         var projects = await repository.GetAllAsync();
-        return Results.Ok(projects);
+        return Results.Ok(projects.Select(project => project.ToResponse()).ToArray());
     }
 
     private static async Task<IResult> GetBySlug(IProjectRepository repository, string slug)
     {
         var project = await repository.GetBySlugAsync(slug);
         if (project is null)
+        {
             throw new NotFoundException($"Project '{slug}' not found.");
+        }
 
-        return Results.Ok(project);
+        return Results.Ok(project.ToResponse());
     }
 }

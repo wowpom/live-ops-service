@@ -16,6 +16,7 @@ public class Program
 
         builder.Services.AddSingleton<IProjectRepository, InMemoryProjectRepository>();
         builder.Services.AddProblemDetails();
+        builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadRequest = true);
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         
         var app = builder.Build();
@@ -27,6 +28,13 @@ public class Program
         }
 
         app.UseExceptionHandler();
+        app.UseStatusCodePages(async context =>
+        {
+            await Results.Problem(
+                statusCode: context.HttpContext.Response.StatusCode,
+                extensions: new Dictionary<string, object?> { ["traceId"] = context.HttpContext.TraceIdentifier })
+                .ExecuteAsync(context.HttpContext);
+        });
 
         app.MapAdminEndpoints();
 

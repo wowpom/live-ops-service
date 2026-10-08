@@ -1,3 +1,3 @@
 namespace LiveOpsService.Models;
 
-public record CreateVersionRequest(string version);
+public record CreateVersionRequest(string? version);
