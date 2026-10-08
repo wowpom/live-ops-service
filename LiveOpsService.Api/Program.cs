@@ -1,4 +1,5 @@
 using LiveOpsService.Application.Common.Interfaces;
+using LiveOpsService.Application.Services;
 using LiveOpsService.Endpoints;
 using LiveOpsService.Infrastructure.Persistence;
 using LiveOpsService.Middleware;
@@ -14,7 +15,10 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddSingleton<InMemoryStore>();
         builder.Services.AddSingleton<IProjectRepository, InMemoryProjectRepository>();
+        builder.Services.AddSingleton<IConfigRepository, InMemoryConfigRepository>();
+        builder.Services.AddScoped<ConfigService>();
         builder.Services.AddProblemDetails();
         builder.Services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadRequest = true);
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -37,6 +41,7 @@ public class Program
         });
 
         app.MapAdminEndpoints();
+        app.MapConfigEndpoints();
 
         app.MapGet("/", () => Results.Redirect("/swagger"));
 

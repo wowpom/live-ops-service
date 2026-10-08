@@ -4,5 +4,5 @@ public class AppVersion
 {
     public Guid Id { get; set; }
     public required string Version { get; set; }
-    public Guid ConfigId { get; set; }
+    public Guid? ConfigId { get; set; }
 }
