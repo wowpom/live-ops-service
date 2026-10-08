@@ -14,6 +14,7 @@ public static class AdminEndpoint
         group.MapGet("/projects/{slug}", GetBySlug);
         group.MapGet("/projects", GetAll);
         group.MapPost("/projects/{projectSlug}/platforms", CreatePlatform);
+        group.MapPost("/projects/{projectSlug}/platforms/{platformSlug}/versions", CreateVersion);
     }
 
     private static async Task<IResult> CreateProject(CreateProjectRequest request, IProjectRepository repository)
@@ -26,6 +27,12 @@ public static class AdminEndpoint
     {
         var platform = await repository.AddPlatformAsync(projectSlug, request.slug, request.name);
         return Results.Created($"/api/admin/projects/{projectSlug}/platforms/{request.slug}", platform);
+    }
+
+    private static async Task<IResult> CreateVersion(string projectSlug, string platformSlug, CreateVersionRequest request, IProjectRepository repository)
+    {
+        var version = await repository.AddVersionAsync(projectSlug, platformSlug, request.version);
+        return Results.Created($"/api/admin/projects/{projectSlug}/platforms/{platformSlug}/versions/{request.version}", version);
     }
 
     private static async Task<IResult> GetAll(IProjectRepository repository)
