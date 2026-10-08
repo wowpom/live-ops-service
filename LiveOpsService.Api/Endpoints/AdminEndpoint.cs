@@ -13,12 +13,19 @@ public static class AdminEndpoint
         group.MapPost("/projects", CreateProject);
         group.MapGet("/projects/{slug}", GetBySlug);
         group.MapGet("/projects", GetAll);
+        group.MapPost("/projects/{projectSlug}/platforms", CreatePlatform);
     }
 
     private static async Task<IResult> CreateProject(CreateProjectRequest request, IProjectRepository repository)
     {
         var project = await repository.CreateAsync(request.slug, request.name);
         return Results.Created($"/api/admin/projects/{request.slug}", project);
+    }
+
+    private static async Task<IResult> CreatePlatform(string projectSlug, CreatePlatformRequest request, IProjectRepository repository)
+    {
+        var platform = await repository.AddPlatformAsync(projectSlug, request.slug, request.name);
+        return Results.Created($"/api/admin/projects/{projectSlug}/platforms/{request.slug}", platform);
     }
 
     private static async Task<IResult> GetAll(IProjectRepository repository)
